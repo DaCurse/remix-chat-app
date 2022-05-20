@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import type { ChatMessage } from '~/chat'
 import { getSessionUser, sendMessage } from '~/chat.server'
 
+const MAX_MESSAGE_LENGTH = 256
+
 export const loader: LoaderFunction = async ({ request }) => {
   return await getSessionUser(request)
 }
@@ -12,7 +14,10 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await getSessionUser(request)
   const formData = await request.formData()
 
-  sendMessage(user, String(formData.get('message')))
+  const message = String(formData.get('message')).slice(0, MAX_MESSAGE_LENGTH)
+  if (message.length > 0) {
+    sendMessage(user, message)
+  }
 
   return null
 }
