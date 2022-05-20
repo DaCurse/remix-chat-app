@@ -3,6 +3,7 @@ import type { ChatMessage } from '~/chat'
 import {
   addUser,
   chat,
+  doesUserExist,
   getSessionUser,
   getUsers,
   removeUser,
@@ -60,8 +61,10 @@ export const loader: LoaderFunction = async ({ request }) => {
           return
         }
 
-        addUser(user)
-        console.log('users', getUsers())
+        if (!doesUserExist(user)) {
+          addUser(user)
+          console.log('users', getUsers())
+        }
       },
     }),
     { headers: { 'Content-Type': 'text/event-stream' } }

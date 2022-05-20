@@ -68,6 +68,7 @@ export default function Chat() {
 
     eventSource.addEventListener('user-joined', event => {
       const user = event.data
+
       setUsers(users => new Set([...users, user]))
       setMessages(messages => [
         ...messages,
@@ -77,12 +78,14 @@ export default function Chat() {
 
     eventSource.addEventListener('user-left', event => {
       const user = event.data
+
       setUsers(users => new Set([...users].filter(u => u !== user)))
       setMessages(messages => [
         ...messages,
         { user: 'System', message: `"${user}" left the chat` },
       ])
     })
+
     return () => eventSource.close()
   }, [])
 
