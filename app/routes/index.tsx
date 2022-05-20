@@ -21,8 +21,14 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
 
   const user = String(formData.get('user'))
-  if (user.toLowerCase() === 'system' || doesUserExist(user)) {
-    return json<ActionData>({ error: 'User already exists' })
+  if (
+    user.length <= 0 ||
+    user.toLowerCase() === 'system' ||
+    doesUserExist(user)
+  ) {
+    return json<ActionData>({
+      error: 'Invalid username or user already exists',
+    })
   }
 
   addUser(user)
