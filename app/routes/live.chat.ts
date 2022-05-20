@@ -1,10 +1,16 @@
 import type { LoaderFunction } from '@remix-run/node'
 import type { ChatMessage } from '~/chat'
-import { chat, getSessionUser } from '~/chat.server'
+import {
+  addUser,
+  chat,
+  getSessionUser,
+  getUsers,
+  removeUser,
+} from '~/chat.server'
 
 export const loader: LoaderFunction = async ({ request }) => {
   if (!request.signal) return new Response(null, { status: 500 })
-  await getSessionUser(request)
+  const user = await getSessionUser(request)
 
   return new Response(
     new ReadableStream({
@@ -40,6 +46,8 @@ export const loader: LoaderFunction = async ({ request }) => {
           chat.removeListener('user-left', handleUserLeft)
           request.signal.removeEventListener('abort', close)
           controller.close()
+
+          removeUser(user)
         }
 
         chat.addListener('message', handleChatMessage)
@@ -51,6 +59,9 @@ export const loader: LoaderFunction = async ({ request }) => {
           close()
           return
         }
+
+        addUser(user)
+        console.log('users', getUsers())
       },
     }),
     { headers: { 'Content-Type': 'text/event-stream' } }

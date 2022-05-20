@@ -12,7 +12,7 @@ global.users =
   global.users ||
   new LRUCache({
     max: 100,
-    ttl: 3_600,
+    ttl: 3_600_000,
   })
 global.chatEvents = global.chatEvents || new EventEmitter()
 
@@ -49,6 +49,13 @@ export function removeUser(user: string) {
  */
 export function doesUserExist(user: string) {
   return users.has(user)
+}
+
+/**
+ * Returns a list of all users currently logged in.
+ */
+export function getUsers() {
+  return Array.from(users.keys())
 }
 
 /**

@@ -1,7 +1,7 @@
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
-import { addUser, doesUserExist } from '~/chat.server'
+import { doesUserExist } from '~/chat.server'
 import { commitSession, getSession } from '~/session.server'
 
 interface ActionData {
@@ -33,7 +33,6 @@ export const action: ActionFunction = async ({ request }) => {
     })
   }
 
-  addUser(user)
   session.set('user', user)
 
   return redirect('/chat', {
