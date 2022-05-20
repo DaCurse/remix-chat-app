@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "@remix-run/eslint-config",
+    "@remix-run/eslint-config/node",
+    "prettier"
+  ],
+  "plugins": ["prettier"],
+  "ignorePatterns": [
+    "node_modules",
+    "build",
+    "public/build",
+    "server/build",
+    "server/*.js"
+  ],
+  "rules": {
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "prefer-const": "error"
+  }
+}
