@@ -29,7 +29,6 @@ WORKDIR /myapp
 COPY --from=deps /myapp/node_modules /myapp/node_modules
 
 ADD . .
-RUN npm run postinstall
 RUN npm run build
 
 # Finally, build the production image with minimal footprint
