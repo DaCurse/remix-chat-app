@@ -16,11 +16,13 @@ export const loader: LoaderFunction = async ({ request }) => {
   return null
 }
 
+const MAX_USERNAME_LENGTH = 20
+
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'))
   const formData = await request.formData()
 
-  const user = String(formData.get('user'))
+  const user = String(formData.get('user')).slice(0, MAX_USERNAME_LENGTH)
   if (
     user.length <= 0 ||
     user.toLowerCase() === 'system' ||
